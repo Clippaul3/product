@@ -52,6 +52,7 @@ class RightNav extends Component {
     render() {
         //得到当前请求的路由路径,用于默认选择
         let url = this.props.location.pathname
+
         let openKey = this.openKey
         return (
             <div className={'right-nav'}>

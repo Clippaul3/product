@@ -14,6 +14,7 @@ import User from "../user/user";
 import Pie from "../charts/pie";
 import Line from "../charts/line";
 import Bar from "../charts/bar";
+import api from '../../api'
 
 
 const {Header,Footer,Sider,Content} = Layout
@@ -22,7 +23,7 @@ export default class Admin extends Component{
 
 
     render() {
-
+        /*console.log(api.reqWeather().then((result)=>console.log(result.data.city)))*/
         let {user} = memoryUtils
         //如果当前内存中没有user说明当前尚未登陆
         if(!user || !user._id){
