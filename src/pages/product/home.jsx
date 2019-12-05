@@ -71,7 +71,7 @@ export default class ProductHome extends Component {
                     return (
                         <span>
                             <a onClick={() => this.props.history.push('/admin/product/detail', product)}>详情</a>
-                            <a>修改</a>
+                            <a onClick={()=>this.props.history.push('/admin/product/add-update',product)}>修改</a>
                         </span>
                     )
                 }

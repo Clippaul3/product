@@ -52,6 +52,10 @@ export default {
     //改变商品状态(上下架操作)
     updateStatus(productId,status){
         return (sendAjax('/manage/product/updateStatus',{productId,status},'POST'))
+    },
+
+    deleteImg(name){
+        return (sendAjax('/manage/img/delete',{name},'POST'))
     }
 
 }

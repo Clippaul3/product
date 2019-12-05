@@ -45,7 +45,7 @@ export default class Detail extends Component{
         )
 
         let {name,desc,price,detail,imgs} = this.props.location.state
-
+        let {cname,cname2} = this.state
         return(
             <Card title={title} className={'product-detail'}>
                 <List>
@@ -64,7 +64,7 @@ export default class Detail extends Component{
                     <Item>
                         <span className={'left-span'}>所属分类:</span>
                         <span>
-                            {this.state.cname2}---->{this.state.cname}
+                            {cname2 ? cname2 + '---->' : ''}{cname}
                         </span>
                     </Item>
                     <Item>
@@ -72,7 +72,7 @@ export default class Detail extends Component{
                         <span>
                             {
                                 imgs.map(img=>(
-                                    <img key={img} className={'product-img'} src={BASE_IMG_URL+'default_boy_headpic.png'}/>
+                                    <img key={img} className={'product-img'} src={BASE_IMG_URL + img}/>
                                 ))
                             }
 
