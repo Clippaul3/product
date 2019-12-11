@@ -1,10 +1,12 @@
 import React, {Component} from 'react'
-import {Card, Form, Icon, Input, Button, Cascader, Upload} from 'antd'
+import {Card, Form, Icon, Input, Button, Cascader, Upload, message} from 'antd'
 //产品的增改子路由
 import api from '../../api'
 import product from "./product";
 import PicturesWall from "./pictures-wall";
 import {instanceOf} from "prop-types";
+import RichTextEdit from "./rich-text-edit";
+import detail from "./detail";
 
 let {Item} = Form
 let {TextArea} = Input
@@ -15,11 +17,12 @@ class ProductAddUpdate extends Component {
         options: [],
     }
 
-    constructor(props){
+    constructor(props) {
         super(props)
 
         //创建用来保存ref标识的标签对象的容器
         this.pw = React.createRef()
+        this.rte = React.createRef()
     }
 
     initOptions = async (categories) => {
@@ -31,13 +34,13 @@ class ProductAddUpdate extends Component {
         }))
 
         //如果是一个二级分类商品的更新
-        let {isUpdate,product} = this
-        let {pCategoryId,categoryId} = product
-        if(isUpdate && pCategoryId != '0'){
+        let {isUpdate, product} = this
+        let {pCategoryId, categoryId} = product
+        if (isUpdate && pCategoryId != '0') {
             //获取对应的二级分类列表
             let subCategories = await this.getCategories(pCategoryId)
             //生成二级下拉列表options
-            let childOptions = subCategories.map((c)=>({
+            let childOptions = subCategories.map((c) => ({
                 value: c._id,
                 label: c.name,
                 isLeaf: true
@@ -69,11 +72,39 @@ class ProductAddUpdate extends Component {
 
     submit = () => {
         //进行整体表单验证,如果通过,才能发送请求
-        this.props.form.validateFields((error, values) => {
+        this.props.form.validateFields(async (error, values) => {
 
             if (!error) {
+                //1.收集数据,并封装成product对象
+                let {name, desc, price, categoryIds} = values
+                let pCategoryId, categoryId
+                if (categoryIds.length === 1) {
+                    pCategoryId = '0'
+                    categoryId = categoryIds[0]
+                }else{
+                    pCategoryId = categoryIds[0]
+                    categoryId = categoryIds[1]
+                }
+
                 let imgs = this.pw.current.getImgs()
-                console.log('submit imgs   '+imgs)
+                let detail = this.rte.current.getDetail()
+
+                let product = {name, desc, price,imgs,detail,categoryId,pCategoryId}
+                //如果是更新,需要添加_id
+                if(this.isUpdate){
+                    product._id = this.product._id
+                }
+                //2.调用接口请求函数去添加或修改
+                let result = await api.addOrUpdateProduct(product)
+                //3.根据结果提示
+                if(result.data.status === 0){
+                    message.success(`${this.isUpdate ? '更新':'添加'}成功`)
+                    this.props.history.goBack()
+                }else{
+                    message.error(`${this.isUpdate ? '更新':'添加'}失败`)
+                }
+                console.log('submit imgs   ' + imgs)
+                console.log('getDetail' + detail)
                 console.log(Object.prototype.toString.call(imgs))
             }
         })
@@ -135,8 +166,8 @@ class ProductAddUpdate extends Component {
     render() {
         let {isUpdate, product} = this
         console.log(product)
-        let {pCategoryId, categoryId,imgs} = product
-        console.log('第一个'+imgs)
+        let {pCategoryId, categoryId, imgs, detail} = product
+        console.log('第一个' + imgs)
         //用来接收级联分类Id的数组
         let categoryIds = []
         if (isUpdate) {
@@ -224,8 +255,8 @@ class ProductAddUpdate extends Component {
                     <Item label={'商品图片'}>
                         <PicturesWall ref={this.pw} imgs={imgs}/>
                     </Item>
-                    <Item label={'商品详情'}>
-                        <Input type={'number'} placeholder={'请输入商品价格'} addonAfter={'元'}/>
+                    <Item label={'商品详情'} labelCol={{span: 2}} wrapperCol={{span: 20}}>
+                        <RichTextEdit ref={this.rte} detail={detail}/>
                     </Item>
                     <Item>
                         <Button type={'primary'} onClick={this.submit}>提交</Button>

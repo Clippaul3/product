@@ -6,15 +6,13 @@
 
 import sendAjax from "./ajax";
 import axios from 'axios'
+import product from "../pages/product/product";
 
 
 
 export default {
     reqLogin(username,password){
         return sendAjax('/login',{username,password},'POST')
-    },
-    reqAddAdmin(user){
-        return sendAjax('/manage/user/add',user,'POST')
     },
     reqWeather(){
         return (axios.get('https://www.tianqiapi.com/api/?version=v1&appid=XXXX&appsecret=$$$$$',))
@@ -56,6 +54,44 @@ export default {
 
     deleteImg(name){
         return (sendAjax('/manage/img/delete',{name},'POST'))
-    }
+    },
 
+    //添加商品
+    addOrUpdateProduct(product){
+        return (sendAjax('/manage/product/' + (product._id?'update':'add'),product,'POST'))
+    },
+   /* //更新商品
+    updateProduct(product){
+        return (sendAjax('/manage/product/add',product,'POST'))
+    },*/
+
+   reqRoles(){
+     return (sendAjax('/manage/role/list'))
+   },
+
+    addRole(roleName){
+       //添加角色
+        return (sendAjax('/manage/role/add',{roleName},'POST'))
+    },
+
+    updateRole(role){
+       return (sendAjax('/manage/role/update',role,'POST'))
+    },
+
+    //获取用户列表
+    reqUsers(){
+       return (sendAjax('/manage/user/list'))
+    },
+
+    deleteUser(userId) {
+       return (sendAjax('/manage/user/delete',{userId},'POST'))
+    },
+
+    addUser(user){
+       return (sendAjax('/manage/user/add',user,'POST'))
+    },
+    //添加/更新用户
+    addOrUpdateUser(user){
+       return (sendAjax('/manage/user/'+(user._id ? 'update' : 'add'),user,'POST'))
+    }
 }
