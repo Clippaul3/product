@@ -2,7 +2,8 @@ const  menulist = [
     {
         title:'首页',
         key:'/admin/home',
-        icon:'home'
+        icon:'home',
+        isPublic:true
     },
     {
         title:'商品',
