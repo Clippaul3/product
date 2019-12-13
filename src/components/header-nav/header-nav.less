@@ -1,0 +1,41 @@
+.header-nav {
+  height: 90px;
+  color: white;
+  width: 100%;
+
+  .header-up {
+    height: 40px;
+    border-bottom: 1px solid white;
+    text-align: right;
+    line-height: 40px;
+    padding-right: 60px;
+  }
+  .header-down{
+    height: 40px;
+    display: flex;
+    align-items: center;
+
+    .header-down-left{
+      width: 25%;
+      text-align: center;
+      font-size: 20px;
+      margin-bottom: 20px;
+      &::after{
+        content: '';
+        position: absolute;
+        border-top: 20px solid pink;
+        border-right: 20px solid transparent;
+        border-left: 20px solid transparent;
+        border-bottom: 20px solid transparent;
+        top:63px;
+        left: 200px;
+      }
+    }
+    .header-down-right{
+      width: 75%;
+      text-align: right;
+      margin-bottom: 20px;
+      margin-right: 30px;
+    }
+  }
+}
