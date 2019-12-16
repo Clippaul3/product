@@ -62,6 +62,7 @@ export default class Roles extends Component{
 
     getRoles = async ()=>{
         let result = await api.reqRoles()
+        console.log(result)
         if(result.data.status === 0){
             let roles = result.data.data
             this.setState({roles})

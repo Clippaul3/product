@@ -93,5 +93,20 @@ export default {
     //添加/更新用户
     addOrUpdateUser(user){
        return (sendAjax('/manage/user/'+(user._id ? 'update' : 'add'),user,'POST'))
+    },
+
+    //进货记录
+    reqStock(){
+       return (sendAjax('/manage/stock/list'))
+    },
+
+    //进货添加
+    addStock(stock){
+       return (sendAjax('/manage/stock/add',stock,'POST'))
+    },
+
+    //所有销售记录
+    reqSales(){
+       return (sendAjax('/manage/sale/list'))
     }
 }

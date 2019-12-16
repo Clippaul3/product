@@ -2,7 +2,7 @@ import React,{Component} from  'react'
 import memoryUtils from "../../utils/memoryUtils";
 import storageUtils from "../../utils/storageUtils";
 import {Redirect,Route,Switch} from 'react-router-dom'
-import {Layout} from 'antd'
+import {Input, Layout} from 'antd'
 import RightNav from "../../components/right-nav/right-nav";
 import HeaderNav from "../../components/header-nav/header-nav";
 import './admin.css'
@@ -15,6 +15,8 @@ import Pie from "../charts/pie";
 import Line from "../charts/line";
 import Bar from "../charts/bar";
 import api from '../../api'
+import Stock from '../stock/stock'
+import Sale from "../sale/sale";
 
 
 const {Header,Footer,Sider,Content} = Layout
@@ -44,6 +46,8 @@ export default class Admin extends Component{
                             <Route path={'/admin/user'} component={User}/>
                             <Route path={'/admin/roles'} component={Roles}/>
                             <Route path={'/admin/product'} component={Product}/>
+                            <Route path={'/admin/stock'} component={Stock}/>
+                            <Route path={'/admin/sale'} component={Sale}/>
                             <Route path={'/admin/charts/pie'} component={Pie}/>
                             <Route path={'/admin/charts/line'} component={Line}/>
                             <Route path={'/admin/charts/bar'} component={Bar}/>

@@ -73,15 +73,18 @@ class ProductAddUpdate extends Component {
     submit = () => {
         //进行整体表单验证,如果通过,才能发送请求
         this.props.form.validateFields(async (error, values) => {
-
+            console.log(values)
             if (!error) {
                 //1.收集数据,并封装成product对象
-                let {name, desc, price, categoryIds} = values
+                let {name, desc, price, store, categoryIds} = values
+                store = store * 1
+                console.log('store1' + store)
+                console.log(typeof store)
                 let pCategoryId, categoryId
                 if (categoryIds.length === 1) {
                     pCategoryId = '0'
                     categoryId = categoryIds[0]
-                }else{
+                } else {
                     pCategoryId = categoryIds[0]
                     categoryId = categoryIds[1]
                 }
@@ -89,23 +92,20 @@ class ProductAddUpdate extends Component {
                 let imgs = this.pw.current.getImgs()
                 let detail = this.rte.current.getDetail()
 
-                let product = {name, desc, price,imgs,detail,categoryId,pCategoryId}
+                let product = {name, desc, price, imgs, store, detail, categoryId, pCategoryId}
                 //如果是更新,需要添加_id
-                if(this.isUpdate){
+                if (this.isUpdate) {
                     product._id = this.product._id
                 }
                 //2.调用接口请求函数去添加或修改
                 let result = await api.addOrUpdateProduct(product)
                 //3.根据结果提示
-                if(result.data.status === 0){
-                    message.success(`${this.isUpdate ? '更新':'添加'}成功`)
+                if (result.data.status === 0) {
+                    message.success(`${this.isUpdate ? '更新' : '添加'}成功`)
                     this.props.history.goBack()
-                }else{
-                    message.error(`${this.isUpdate ? '更新':'添加'}失败`)
+                } else {
+                    message.error(`${this.isUpdate ? '更新' : '添加'}失败`)
                 }
-                console.log('submit imgs   ' + imgs)
-                console.log('getDetail' + detail)
-                console.log(Object.prototype.toString.call(imgs))
             }
         })
     }
@@ -115,7 +115,7 @@ class ProductAddUpdate extends Component {
         if (value * 1 >= 0) {
             callback()
         } else {
-            callback('价格必须不小于0')
+            callback('必须不小于0')
         }
 
 
@@ -152,6 +152,7 @@ class ProductAddUpdate extends Component {
         })
     }
 
+
     componentWillMount() {
         let product = this.props.location.state
         this.isUpdate = !!product//强制转换成boolean类型数据,是否是更新的标识
@@ -159,7 +160,6 @@ class ProductAddUpdate extends Component {
     }
 
     componentDidMount() {
-
         this.getCategories('0')
     }
 
@@ -248,6 +248,20 @@ class ProductAddUpdate extends Component {
                                     options={this.state.options}
                                     loadData={this.loadData}
                                 />
+                            )
+                        }
+
+                    </Item>
+                    <Item label={'商品库存'}>
+                        {
+                            getFieldDecorator('store', {
+                                initialValue: product.store,
+                                rules: [
+                                    {required: true, message: '必须输入商品库存,且不小于0'},
+                                    {validator: this.validatorPrice}
+                                ]
+                            })(
+                                <Input type={'number'} placeholder={'请输入商品库存'} addonAfter={'件'}/>
                             )
                         }
 

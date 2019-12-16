@@ -23,6 +23,16 @@ const  menulist = [
         ]
     },
     {
+        title:'进货记录',
+        key:'/admin/stock',
+        icon:'account-book'
+    },
+    {
+        title:'出货记录',
+        key:'/admin/sale',
+        icon:'shopping-cart'
+    },
+    {
         title:'用户管理',
         key:'/admin/user',
         icon:'user'
